@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  # Base de Datos para Autores (MySQL)
+  [cite_start]db-authors: [cite: 98]
+    image: mysql:8.0
+    container_name: db-authors
+    [cite_start]environment: [cite: 103]
+      MYSQL_DATABASE: db_authors
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    [cite_start]volumes: [cite: 104]
+      - db_authors_data:/var/lib/mysql
+    networks:
+      - [cite_start]editorial-network [cite: 102]
+
+  # Microservicio 1: Authors (Laravel)
+  [cite_start]authors-service: [cite: 95]
+    build:
+      context: ./authors-service
+      dockerfile: Dockerfile
+    container_name: authors-service
+    [cite_start]ports: [cite: 106]
+      - "8000:8000"
+    [cite_start]environment: [cite: 103]
+      DB_HOST: db-authors
+      DB_DATABASE: db_authors
+      DB_USERNAME: root
+      DB_PASSWORD: root
+    depends_on:
+      - db-authors
+    networks:
+      - editorial-network
+
+  # Base de Datos para Publicaciones (PostgreSQL)
+  [cite_start]db-publications: [cite: 99]
+    image: postgres:15
+    container_name: db-publications
+    [cite_start]environment: [cite: 103]
+      POSTGRES_DB: db_publications
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5433:5432"
+    [cite_start]volumes: [cite: 104]
+      - db_publications_data:/var/lib/postgresql/data
+    networks:
+      - editorial-network
+
+  # Microservicio 2: Publications (Spring Boot)
+  [cite_start]publications-service: [cite: 96]
+    build:
+      context: ./publications-service
+      dockerfile: Dockerfile
+    container_name: publications-service
+    [cite_start]ports: [cite: 106]
+      - "8080:8080"
+    [cite_start]environment: [cite: 103]
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db-publications:5432/db_publications
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+      AUTHORS_SERVICE_URL: http://authors-service:8000/api
+    depends_on:
+      - db-publications
+    networks:
+      - editorial-network
+
+  # Frontend (React + SWC)
+  [cite_start]frontend: [cite: 97]
+    build:
+      context: ./frontGAP
+      dockerfile: Dockerfile
+    container_name: frontend
+    [cite_start]ports: [cite: 106]
+      - "5173:5173"
+    networks:
+      - editorial-network
+
+[cite_start]networks: [cite: 102]
+  editorial-network:
+    driver: bridge
+
+[cite_start]volumes: [cite: 104]
+  db_authors_data:
+  db_publications_data:
