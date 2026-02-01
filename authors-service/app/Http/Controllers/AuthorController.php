@@ -6,7 +6,7 @@ use App\Services\authorService;
 use App\Http\Requests\storeAuthorRequest;
 use Illuminate\Http\JsonResponse;
 
-class authorController
+class AuthorController
 {
     public function __construct(protected authorService $service) {}
 
