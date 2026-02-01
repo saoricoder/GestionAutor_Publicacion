@@ -1,7 +1,7 @@
 <?php
 namespace App\Models\Domain;
 
-class regularAuthor extends BaseAuthor {
+class RegularAuthor extends BaseAuthor {
     private $affiliation;
     private $registrationDate;
 

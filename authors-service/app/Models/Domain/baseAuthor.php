@@ -1,7 +1,7 @@
 <?php
 namespace App\Models\Domain;
 
-abstract class baseAuthor {
+abstract class BaseAuthor {
     protected $idAuthor;
     protected $name;
     protected $email;
