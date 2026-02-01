@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\authorController;
+use App\Http\Controllers\AuthorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,15 +13,15 @@ use App\Http\Controllers\authorController;
 // Agrupamos las rutas de autores para mantener el código limpio
 Route::prefix('authors')->group(function () {
 
-    // Listar todos los autores 
-    Route::get('/', [authorController::class, 'index']);
+    // Listar todos los autores
+    Route::get('/', [AuthorController::class, 'index']);
 
-    // Obtener un autor específico por ID 
-    Route::get('/{id}', [authorController::class, 'show']);
+    // Obtener un autor específico por ID
+    Route::get('/{id}', [AuthorController::class, 'show']);
 
     // Crear un nuevo autor
-    Route::post('/', [authorController::class, 'store']);
+    Route::post('/', [AuthorController::class, 'store']);
 
-    Route::put('/{id}', [authorController::class, 'update']);
-    Route::delete('/{id}', [authorController::class, 'destroy']);
+    Route::put('/{id}', [AuthorController::class, 'update']);
+    Route::delete('/{id}', [uthorController::class, 'destroy']);
 });

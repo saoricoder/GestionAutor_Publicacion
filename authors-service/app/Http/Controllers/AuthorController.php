@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\authorService;
+use App\Services\AuthorService;
 use App\Http\Requests\storeAuthorRequest;
 use Illuminate\Http\JsonResponse;
 
 class AuthorController
 {
-    public function __construct(protected authorService $service) {}
+    public function __construct(protected AuthorService $service) {}
 
     public function index(): JsonResponse
     {
