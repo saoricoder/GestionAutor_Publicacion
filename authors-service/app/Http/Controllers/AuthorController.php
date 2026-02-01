@@ -1,31 +1,52 @@
 <?php
-namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Services\AuthorService;
-use Illuminate\Http\Request;
+namespace App\Http\Controllers;
 
-class AuthorController extends Controller {
-    protected $authorService;
+use App\Services\authorService;
+use App\Http\Requests\storeAuthorRequest;
+use Illuminate\Http\JsonResponse;
 
-    public function __construct(AuthorService $authorService) {
-        $this->authorService = $authorService;
-    }
+class authorController
+{
+    public function __construct(protected authorService $service) {}
 
-    public function index() {
-        return response()->json($this->authorService->getAllAuthors());
-    }
-
-    public function show($id) {
-        return response()->json($this->authorService->getAuthorById($id));
-    }
-
-    public function store(Request $request) {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:authors',
-            'bio' => 'nullable|string'
+    public function index(): JsonResponse
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $this->service->listAuthors()
         ]);
-        return response()->json($this->authorService->createAuthor($data), 211);
     }
+
+    public function show(string $id): JsonResponse
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $this->service->findAuthor($id)
+        ]);
+    }
+
+    public function store(storeAuthorRequest $request): JsonResponse
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $this->service->createAuthor($request->validated())
+        ], 201);
+    }
+
+    public function update(storeAuthorRequest $request, string $id): JsonResponse
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $this->service->updateAuthor($id, $request->validated())
+        ]);
+    }
+
+    public function destroy($id): JsonResponse
+    {
+        $this->service->deleteAuthor($id);
+        return response()->json(['message' => 'Autor eliminado'], 200);
+    }
+
+
 }

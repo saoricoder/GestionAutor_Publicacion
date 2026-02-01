@@ -1,7 +1,27 @@
 <?php
-use App\Http\Controllers\Api\AuthorController;
-use Illuminate\Support\Facades\Route;
 
-Route::get('/authors', [AuthorController::class, 'index']); [cite: 31]
-Route::get('/authors/{id}', [AuthorController::class, 'show']); [cite: 30]
-Route::post('/authors', [AuthorController::class, 'store']); [cite: 29]
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\authorController;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+| Aquí es donde registras las rutas para tu microservicio.
+*/
+
+// Agrupamos las rutas de autores para mantener el código limpio
+Route::prefix('authors')->group(function () {
+
+    // Listar todos los autores [Requisito 5.1.1]
+    Route::get('/', [authorController::class, 'index']);
+
+    // Obtener un autor específico por ID [Requisito 5.1.1]
+    Route::get('/{id}', [authorController::class, 'show']);
+
+    // Crear un nuevo autor [Requisito 5.1.1]
+    Route::post('/', [authorController::class, 'store']);
+
+    Route::put('/{id}', [authorController::class, 'update']);
+    Route::delete('/{id}', [authorController::class, 'destroy']);
+});
