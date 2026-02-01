@@ -1,86 +1,125 @@
-version: '3.8'
-
 services:
   # Base de Datos para Autores (MySQL)
-  [cite_start]db-authors: [cite: 98]
+  db-authors:
     image: mysql:8.0
     container_name: db-authors
-    [cite_start]environment: [cite: 103]
-      MYSQL_DATABASE: db_authors
-      MYSQL_ROOT_PASSWORD: root
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-db_authors}
+      MYSQL_USER: ${MYSQL_USER:-root}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-root}
     ports:
-      - "3307:3306"
-    [cite_start]volumes: [cite: 104]
+      - "${MYSQL_PORT:-3307}:3306"
+    volumes:
       - db_authors_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL","mysqladmin ping -h localhost -P 3306 -u${MYSQL_USER:-root} -p${MYSQL_ROOT_PASSWORD:-root} || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
-      - [cite_start]editorial-network [cite: 102]
+      - editorial-network
 
   # Microservicio 1: Authors (Laravel)
-  [cite_start]authors-service: [cite: 95]
+  authors-service:
     build:
       context: ./authors-service
       dockerfile: Dockerfile
     container_name: authors-service
-    [cite_start]ports: [cite: 106]
-      - "8000:8000"
-    [cite_start]environment: [cite: 103]
+    environment:
+      APP_ENV: local
+      APP_DEBUG: 'true'
+      APP_URL: http://localhost:${AUTHORS_PORT:-8000}
+      DB_CONNECTION: mysql
       DB_HOST: db-authors
-      DB_DATABASE: db_authors
-      DB_USERNAME: root
-      DB_PASSWORD: root
+      DB_PORT: 3306
+      DB_DATABASE: ${MYSQL_DATABASE:-db_authors}
+      DB_USERNAME: ${MYSQL_USER:-root}
+      DB_PASSWORD: ${MYSQL_PASSWORD:-root}
+    ports:
+      - "${AUTHORS_PORT:-8000}:8000"
     depends_on:
       - db-authors
+    healthcheck:
+      test: ["CMD-SHELL","curl -f http://localhost:${AUTHORS_PORT:-8000}/api/authors || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - editorial-network
 
   # Base de Datos para Publicaciones (PostgreSQL)
-  [cite_start]db-publications: [cite: 99]
+  db-publications:
     image: postgres:15
     container_name: db-publications
-    [cite_start]environment: [cite: 103]
-      POSTGRES_DB: db_publications
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-db_publications}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-root}
     ports:
-      - "5433:5432"
-    [cite_start]volumes: [cite: 104]
+      - "${POSTGRES_PORT:-5433}:5432"
+    volumes:
       - db_publications_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-db_publications} || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - editorial-network
 
   # Microservicio 2: Publications (Spring Boot)
-  [cite_start]publications-service: [cite: 96]
+  publications-service:
     build:
       context: ./publications-service
       dockerfile: Dockerfile
     container_name: publications-service
-    [cite_start]ports: [cite: 106]
-      - "8080:8080"
-    [cite_start]environment: [cite: 103]
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db-publications:5432/db_publications
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: root
-      AUTHORS_SERVICE_URL: http://authors-service:8000/api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db-publications:5432/${POSTGRES_DB:-db_publications}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-root}
+      AUTHORS_SERVICE_URL: http://authors-service:${AUTHORS_PORT:-8000}/api
+      SERVER_PORT: ${PUBLICATIONS_PORT:-8080}
+    ports:
+      - "${PUBLICATIONS_PORT:-8080}:8080"
     depends_on:
       - db-publications
+      - authors-service
+    healthcheck:
+      test: ["CMD-SHELL","curl -f http://localhost:${PUBLICATIONS_PORT:-8080}/api/publications || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - editorial-network
 
-  # Frontend (React + SWC)
-  [cite_start]frontend: [cite: 97]
+  # Frontend (React - Vite)
+  frontend:
     build:
       context: ./frontGAP
       dockerfile: Dockerfile
     container_name: frontend
-    [cite_start]ports: [cite: 106]
-      - "5173:5173"
+    environment:
+      VITE_AUTHORS_API_URL: http://authors-service:${AUTHORS_PORT:-8000}/api
+      VITE_PUBLICATIONS_API_URL: http://publications-service:${PUBLICATIONS_PORT:-8080}/api
+      VITE_APP_NAME: ${VITE_APP_NAME:-GestionAut_Pub}
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+    depends_on:
+      - authors-service
+      - publications-service
+    healthcheck:
+      test: ["CMD-SHELL","curl -f http://localhost:${FRONTEND_PORT:-5173} || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - editorial-network
 
-[cite_start]networks: [cite: 102]
+networks:
   editorial-network:
     driver: bridge
 
-[cite_start]volumes: [cite: 104]
+volumes:
   db_authors_data:
   db_publications_data:
