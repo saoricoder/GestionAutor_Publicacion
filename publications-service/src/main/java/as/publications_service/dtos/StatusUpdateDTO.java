@@ -1,8 +1,13 @@
 package as.publications_service.dtos;
 
+import as.publications_service.entities.editorialStatus;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class StatusUpdateDTO {
-    private String status;
+    @NotNull
+    @JsonProperty("status")
+    private editorialStatus newStatus;
 }
