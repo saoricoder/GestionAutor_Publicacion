@@ -1,0 +1,18 @@
+
+server:
+  port: 8080
+spring:
+  application:
+    name: publications-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bd_publications
+    username: postgres
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+authors:
+  service:
+    url: http://localhost:8000/api/authors
