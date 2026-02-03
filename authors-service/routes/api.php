@@ -23,5 +23,5 @@ Route::prefix('authors')->group(function () {
     Route::post('/', [AuthorController::class, 'store']);
 
     Route::put('/{id}', [AuthorController::class, 'update']);
-    Route::delete('/{id}', [uthorController::class, 'destroy']);
+    Route::delete('/{id}', [AuthorController::class, 'destroy']);
 });
