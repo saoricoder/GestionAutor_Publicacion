@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const AUTHORS_API = "http://localhost:8000/api";
-const PUBLICATIONS_API = "http://localhost:8080/api";
+const AUTHORS_API = import.meta.env.VITE_AUTHORS_API_URL || "http://localhost:8000/api";
+const PUBLICATIONS_API = import.meta.env.VITE_PUBLICATIONS_API_URL || "http://localhost:8080/api";
 
 /**
  * ADAPTER PATTERN: Adaptador para comunicación con APIs

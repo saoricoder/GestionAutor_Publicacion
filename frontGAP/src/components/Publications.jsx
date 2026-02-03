@@ -54,7 +54,8 @@ export default function Publications() {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    idAuthor: ''
+    authorId: '',
+    status: 'DRAFT'
   });
 
   const [editingId, setEditingId] = useState(null);
@@ -105,7 +106,7 @@ export default function Publications() {
 
   const handleSave = async () => {
     try {
-      if (!formData.title || !formData.content || !formData.idAuthor) {
+      if (!formData.title || !formData.content || !formData.authorId) {
         toast.current?.show({
           severity: 'warn',
           summary: 'Validación',
@@ -150,7 +151,8 @@ export default function Publications() {
     setFormData({
       title: publication.title,
       content: publication.content,
-      idAuthor: publication.author?.idAuthor || ''
+      authorId: publication.author?.id || '',
+      status: publication.status
     });
     setEditingId(publication.idPublication);
     setShowPublicationDialog(true);
@@ -193,34 +195,12 @@ export default function Publications() {
     }
   };
 
-  const handleStatusChange = async (publication, newStatus) => {
-    try {
-      const updated = await publicationService.updateStatus(
-        publication.idPublication,
-        newStatus
-      );
-      toast.current?.show({
-        severity: 'success',
-        summary: 'Éxito',
-        detail: `Estado cambiado a ${newStatus}`,
-        life: 3000
-      });
-      loadPublications();
-    } catch (error) {
-      toast.current?.show({
-        severity: 'error',
-        summary: 'Error',
-        detail: error.message,
-        life: 3000
-      });
-    }
-  };
-
   const resetForm = () => {
     setFormData({
       title: '',
       content: '',
-      idAuthor: ''
+      authorId: '',
+      status: 'DRAFT'
     });
     setEditingId(null);
   };
@@ -366,15 +346,15 @@ export default function Publications() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="idAuthor">Autor *</label>
+            <label htmlFor="authorId">Autor *</label>
             <Dropdown
-              id="idAuthor"
-              name="idAuthor"
-              value={formData.idAuthor}
-              onChange={(e) => setFormData(prev => ({ ...prev, idAuthor: e.value }))}
+              id="authorId"
+              name="authorId"
+              value={formData.authorId}
+              onChange={(e) => setFormData(prev => ({ ...prev, authorId: e.value }))}
               options={authors}
               optionLabel="name"
-              optionValue="idAuthor"
+              optionValue="id"
               placeholder="Seleccionar autor"
               className="w-full"
             />
@@ -388,6 +368,21 @@ export default function Publications() {
               value={formData.content}
               onChange={handleInputChange}
               rows={8}
+              className="w-full"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="status">Estado</label>
+            <Dropdown
+              id="status"
+              name="status"
+              value={formData.status}
+              onChange={(e) => setFormData(prev => ({ ...prev, status: e.value }))}
+              options={STATUS_OPTIONS}
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Seleccionar estado"
               className="w-full"
             />
           </div>
@@ -440,19 +435,6 @@ export default function Publications() {
             <div className="detail-section">
               <h4>Contenido</h4>
               <p>{selectedPublication.content}</p>
-            </div>
-
-            <div className="detail-section">
-              <h4>Cambiar Estado</h4>
-              <Dropdown
-                options={STATUS_OPTIONS}
-                value={selectedPublication.status}
-                onChange={(e) => handleStatusChange(selectedPublication, e.value)}
-                optionLabel="label"
-                optionValue="value"
-                placeholder="Seleccionar nuevo estado"
-                className="w-full"
-              />
             </div>
 
             <div className="dialog-footer">

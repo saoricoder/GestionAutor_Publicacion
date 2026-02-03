@@ -4,7 +4,7 @@ namespace App\DTOs;
 
 use Illuminate\Support\Str;
 
-class authorDTO
+class AuthorDTO
 {
     public function __construct(
         public ?string $idAuthor,

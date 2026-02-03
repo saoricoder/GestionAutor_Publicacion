@@ -100,8 +100,8 @@ services:
       dockerfile: Dockerfile
     container_name: frontend
     environment:
-      VITE_AUTHORS_API_URL: http://authors-service:${AUTHORS_PORT:-8000}/api
-      VITE_PUBLICATIONS_API_URL: http://publications-service:${PUBLICATIONS_PORT:-8080}/api
+      VITE_AUTHORS_API_URL: http://localhost:${AUTHORS_PORT:-8000}/api
+      VITE_PUBLICATIONS_API_URL: http://localhost:${PUBLICATIONS_PORT:-8080}/api
       VITE_APP_NAME: ${VITE_APP_NAME:-GestionAut_Pub}
     ports:
       - "${FRONTEND_PORT:-5173}:5173"
