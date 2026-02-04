@@ -212,7 +212,7 @@ A continuación presento una evaluación completa, con evidencias del código y 
 
 - Vista de Autores: listado y CRUD básico.
   
-  ![Vista Autores](authors-service/resources/images/Pub.png)
+  ![Vista Autores](authors-service/resources/images/Aut.png)
 
 - Vista de Publicaciones: consulta y detalles de publicaciones.
   
