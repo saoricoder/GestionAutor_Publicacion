@@ -1,7 +1,6 @@
-# Gestión de Autores y Publicaciones (GestionAut_Pub)
+# Universidad de las Fuerzas Armadas ESPE
+## Gestión de Autores y Publicaciones (GestionAut_Pub)
 
-Universidad: Fuerzas Armadas ESPE
-- Autor: 
 * Betty Rodriguez
 * Victor Villamarin
 
@@ -211,10 +210,15 @@ A continuación presento una evaluación completa, con evidencias del código y 
   ```
 ## Pantallas
 
-  Vista Autores
-- authors-service\resources\images\Pub.png
-  Vista Publicaciones
--authors-service\resources\images\Pub.png
-  Despligue exitoso Docker
-- C:\ARQUITECTURA SOFTWARE\GestionAut_Pub\authors-service\resources\images\des.png
+- Vista de Autores: listado y CRUD básico.
+  
+  ![Vista Autores](authors-service/resources/images/Pub.png)
+
+- Vista de Publicaciones: consulta y detalles de publicaciones.
+  
+  ![Vista Publicaciones](authors-service/resources/images/Pub.png)
+
+- Despliegue exitoso en Docker: contenedores en ejecución y health checks OK.
+  
+  ![Despliegue Docker](authors-service/resources/images/des.png)
 
