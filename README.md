@@ -1,8 +1,9 @@
 # Gestión de Autores y Publicaciones (GestionAut_Pub)
 
 Universidad: Fuerzas Armadas ESPE
-Autor: Betty Rodriguez
-        Victor Villamarin
+Autor: 
+* Betty Rodriguez
+* Victor Villamarin
 
 
 Este proyecto implementa un sistema de gestión editorial utilizando una arquitectura de microservicios. El ecosistema está compuesto por:
@@ -126,7 +127,7 @@ Transiciones implementadas:
 - REJECTED → DRAFT — [rejectedToDraftStrategy.java](file:///c:/ARQUITECTURA%20SOFTWARE/GestionAut_Pub/publications-service/src/main/java/as/publications_service/strategy/rejectedToDraftStrategy.java)
   - Devuelve a borrador para correcciones.
 
-- **Ahora se exponda el checklist que cumple**
+## Ahora se exponda el checklist que cumple
                     
 A continuación presento una evaluación completa, con evidencias del código y el cumplimiento de todos los criterios.
 
@@ -210,7 +211,7 @@ A continuación presento una evaluación completa, con evidencias del código y 
     -Method POST -ContentType "application/json" `
     -Body '{"email":"admin@example.com","password":"password123"}'
   ```
-  Existe la coleccion en postman la misma que contiene todos los EndPoint utilizados C:\GestionAut_Pub\Author-Publications.postman_collection.json
+  Existe la colección en Postman con todos los endpoints: [Author-Publications.postman_collection.json](file:///c:/ARQUITECTURA%20SOFTWARE/GestionAut_Pub/Author-Publications.postman_collection.json)
   
 - Publicaciones (listar):
   ```powershell
