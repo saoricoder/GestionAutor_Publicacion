@@ -209,5 +209,12 @@ A continuación presento una evaluación completa, con evidencias del código y 
   ```powershell
   curl http://localhost:8080/api/publications
   ```
+## Pantallas
 
+  Vista Autores
+- authors-service\resources\images\Pub.png
+  Vista Publicaciones
+-authors-service\resources\images\Pub.png
+  Despligue exitoso Docker
+- C:\ARQUITECTURA SOFTWARE\GestionAut_Pub\authors-service\resources\images\des.png
 
