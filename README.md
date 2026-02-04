@@ -1,7 +1,7 @@
 # Gestión de Autores y Publicaciones (GestionAut_Pub)
 
 Universidad: Fuerzas Armadas ESPE
-Autor: 
+- Autor: 
 * Betty Rodriguez
 * Victor Villamarin
 
@@ -197,14 +197,6 @@ A continuación presento una evaluación completa, con evidencias del código y 
 
 **Verificación rápida (comandos)**
 
-- Levantar todo:
-  ```powershell
-  docker compose up -d --build
-  ```
-- Migraciones (Authors):
-  ```powershell
-  docker compose exec authors-service php artisan migrate
-  ```
 - Probar login (POST):
   ```powershell
   Invoke-RestMethod -Uri "http://localhost:8000/api/login" `
