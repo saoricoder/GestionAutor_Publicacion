@@ -1,0 +1,192 @@
+{
+  "info": {
+    "_postman_id": "38b732fa-8f55-4f53-8282-ee3a13374a0e",
+    "name": "Publications Service",
+    "description": "Colección para probar el microservicio de Publicaciones",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "41410430"
+  },
+  "item": [
+    {
+      "name": "Crear Publicación",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"Introducción a Microservicios\",\n    \"content\": \"Contenido detallado sobre arquitectura de software...\",\n    \"status\": \"DRAFT\",\n    \"authorId\": \"<uuid-del-autor>\",\n    \"publicationType\": \"ARTICLE\",\n    \"format\": \"PDF\",\n    \"fileSize\": 15.5\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/publications",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "publications"
+          ]
+        },
+        "description": "Crea una nueva publicación. Requiere que el authorId exista en el servicio de autores."
+      },
+      "response": []
+    },
+    {
+      "name": "Listar Publicaciones",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/publications",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "publications"
+          ]
+        },
+        "description": "Obtiene todas las publicaciones registradas."
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener Publicación por ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/publications/:id",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "publications",
+            ":id"
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "uuid-de-ejemplo",
+              "description": "UUID de la publicación"
+            }
+          ]
+        },
+        "description": "Busca una publicación específica por su UUID."
+      },
+      "response": []
+    },
+    {
+      "name": "Actualizar Estado",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"status\": \"PUBLISHED\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/publications/:id/status",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "publications",
+            ":id",
+            "status"
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "uuid-de-ejemplo",
+              "description": "UUID de la publicación a actualizar"
+            }
+          ]
+        },
+        "description": "Actualiza únicamente el estado editorial de la publicación."
+      },
+      "response": []
+    },
+    {
+      "name": "Actualizar Publicación",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"Título Actualizado de la Publicación\",\n    \"content\": \"Contenido actualizado de la publicación...\",\n    \"status\": \"REVIEW\",\n    \"authorId\": \"<uuid-del-autor>\",\n    \"publicationType\": \"BOOK\",\n    \"format\": \"EPUB\",\n    \"fileSize\": 20.0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/publications/:id",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "publications",
+            ":id"
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "uuid-de-ejemplo",
+              "description": "UUID de la publicación a actualizar"
+            }
+          ]
+        },
+        "description": "Actualiza todos los datos de una publicación existente. Requiere que el authorId exista."
+      },
+      "response": []
+    },
+    {
+      "name": "Eliminar Publicación",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/publications/:id",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "publications",
+            ":id"
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "uuid-de-ejemplo",
+              "description": "UUID de la publicación a eliminar"
+            }
+          ]
+        },
+        "description": "Elimina una publicación existente por su UUID."
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
