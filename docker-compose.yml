@@ -78,7 +78,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db-publications:5432/${POSTGRES_DB:-db_publications}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-root}
-      AUTHORS_SERVICE_URL: http://authors-service:${AUTHORS_PORT:-8000}/api
+      AUTHORS_SERVICE_URL: http://authors-service:8000/api
       SERVER_PORT: ${PUBLICATIONS_PORT:-8080}
     ports:
       - "${PUBLICATIONS_PORT:-8080}:8080"

@@ -24,8 +24,9 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            // Instancia directa de Faker para evitar problemas de inyección o helpers globales no encontrados
+            'name' => \Faker\Factory::create()->name(),
+            'email' => \Faker\Factory::create()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),

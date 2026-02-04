@@ -45,8 +45,9 @@ class AuthorController
     public function destroy($id): JsonResponse
     {
         $this->service->deleteAuthor($id);
-        return response()->json(['message' => 'Autor eliminado'], 200);
+        return response()->json([
+            'success' => true,
+            'message' => 'Autor eliminado'
+        ], 200);
     }
-
-
 }

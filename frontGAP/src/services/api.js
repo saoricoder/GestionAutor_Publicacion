@@ -198,6 +198,26 @@ export const publicationService = {
   },
 
   /**
+   * Actualizar estado de publicación
+   */
+  updateStatus: async (idPublication, status) => {
+    try {
+      const response = await axios.patch(
+        `${PUBLICATIONS_API}/publications/${idPublication}/status`,
+        { status },
+      );
+      return response.data.data;
+    } catch (error) {
+      console.error("Error actualizando estado:", error);
+      throw {
+        message:
+          error.response?.data?.message || "Error al actualizar estado",
+        code: error.response?.status,
+      };
+    }
+  },
+
+  /**
    * Eliminar una publicación
    */
   delete: async (idPublication) => {

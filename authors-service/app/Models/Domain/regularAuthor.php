@@ -1,6 +1,12 @@
 <?php
 namespace App\Models\Domain;
 
+/**
+ * Clase derivada: Especializa BaseAuthor para autores regulares.
+ * Dónde: en authors-service, añade afiliación y fecha de registro.
+ * Por qué: permite comportamiento/atributos específicos manteniendo
+ * el contrato del dominio (getRoleDescription).
+ */
 class RegularAuthor extends BaseAuthor {
     private $affiliation;
     private $registrationDate;

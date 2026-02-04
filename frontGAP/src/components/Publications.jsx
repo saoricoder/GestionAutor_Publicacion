@@ -117,7 +117,17 @@ export default function Publications() {
       }
 
       if (editingId) {
+        // Buscar la publicación original para comparar el estado
+        const originalPub = publications.find(p => p.idPublication === editingId);
+        
+        // Si el estado ha cambiado, llamar al endpoint específico de PATCH status
+        if (originalPub && originalPub.status !== formData.status) {
+          await publicationService.updateStatus(editingId, formData.status);
+        }
+        
+        // Actualizar el resto de campos con PUT
         await publicationService.update(editingId, formData);
+        
         toast.current?.show({
           severity: 'success',
           summary: 'Éxito',
@@ -151,7 +161,7 @@ export default function Publications() {
     setFormData({
       title: publication.title,
       content: publication.content,
-      authorId: publication.author?.id || '',
+      authorId: publication.author?.idAuthor || '',
       status: publication.status
     });
     setEditingId(publication.idPublication);
@@ -354,7 +364,7 @@ export default function Publications() {
               onChange={(e) => setFormData(prev => ({ ...prev, authorId: e.value }))}
               options={authors}
               optionLabel="name"
-              optionValue="id"
+              optionValue="idAuthor"
               placeholder="Seleccionar autor"
               className="w-full"
             />

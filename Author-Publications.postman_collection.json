@@ -1,0 +1,255 @@
+{
+  "info": {
+    "_postman_id": "d9b8078b-6b2f-4f5e-b239-8df69b8c1abc",
+    "name": "GestionAut_Pub - Combined API",
+    "description": "Colección unificada para Authors Service y Publications Service",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authors Service",
+      "item": [
+        {
+          "name": "Authentication",
+          "item": [
+            {
+              "name": "Login User",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"password123\"\n}"
+                },
+                "url": {
+                  "raw": "{{authors_base_url}}/api/login",
+                  "host": ["{{authors_base_url}}"],
+                  "path": ["api", "login"]
+                },
+                "description": "Autentica un usuario y devuelve sus datos y un token Bearer."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const res = pm.response.json();",
+                      "if (res && res.token) {",
+                      "  pm.collectionVariables.set('auth_token', res.token);",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Authors",
+          "item": [
+            {
+              "name": "Get All Authors",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{authors_base_url}}/api/authors",
+                  "host": ["{{authors_base_url}}"],
+                  "path": ["api", "authors"]
+                }
+              }
+            },
+            {
+              "name": "Get Author by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{authors_base_url}}/api/authors/:id",
+                  "host": ["{{authors_base_url}}"],
+                  "path": ["api", "authors", ":id"],
+                  "variable": [{ "key": "id", "value": "<uuid-del-autor>" }]
+                }
+              }
+            },
+            {
+              "name": "Create Author",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Gabriel García Márquez\",\n  \"email\": \"gabriel@example.com\",\n  \"bio\": \"Novelista y periodista colombiano...\",\n  \"affiliation\": \"Universidad de Los Andes\"\n}"
+                },
+                "url": {
+                  "raw": "{{authors_base_url}}/api/authors",
+                  "host": ["{{authors_base_url}}"],
+                  "path": ["api", "authors"]
+                }
+              }
+            },
+            {
+              "name": "Update Author",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Nombre Actualizado\",\n  \"email\": \"email.actualizado@example.com\",\n  \"bio\": \"Biografía actualizada del autor.\",\n  \"affiliation\": \"Nueva Afiliación\"\n}"
+                },
+                "url": {
+                  "raw": "{{authors_base_url}}/api/authors/:id",
+                  "host": ["{{authors_base_url}}"],
+                  "path": ["api", "authors", ":id"],
+                  "variable": [{ "key": "id", "value": "<uuid-del-autor>" }]
+                }
+              }
+            },
+            {
+              "name": "Delete Author",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{authors_base_url}}/api/authors/:id",
+                  "host": ["{{authors_base_url}}"],
+                  "path": ["api", "authors", ":id"],
+                  "variable": [{ "key": "id", "value": "<uuid-del-autor>" }]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Publications Service",
+      "item": [
+        {
+          "name": "Crear Publicación",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Introducción a Microservicios\",\n  \"content\": \"Contenido...\",\n  \"status\": \"DRAFT\",\n  \"authorId\": \"<uuid-del-autor>\",\n  \"publicationType\": \"ARTICLE\",\n  \"format\": \"PDF\",\n  \"fileSize\": 15.5\n}"
+            },
+            "url": {
+              "raw": "{{publications_base_url}}/api/publications",
+              "host": ["{{publications_base_url}}"],
+              "path": ["api", "publications"]
+            }
+          }
+        },
+        {
+          "name": "Listar Publicaciones",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "url": {
+              "raw": "{{publications_base_url}}/api/publications",
+              "host": ["{{publications_base_url}}"],
+              "path": ["api", "publications"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Publicación por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "url": {
+              "raw": "{{publications_base_url}}/api/publications/:id",
+              "host": ["{{publications_base_url}}"],
+              "path": ["api", "publications", ":id"],
+              "variable": [{ "key": "id", "value": "uuid-de-ejemplo" }]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Estado",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"PUBLISHED\"\n}"
+            },
+            "url": {
+              "raw": "{{publications_base_url}}/api/publications/:id/status",
+              "host": ["{{publications_base_url}}"],
+              "path": ["api", "publications", ":id", "status"],
+              "variable": [{ "key": "id", "value": "uuid-de-ejemplo" }]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Publicación",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Título Actualizado\",\n  \"content\": \"Contenido actualizado...\",\n  \"status\": \"REVIEW\",\n  \"authorId\": \"<uuid-del-autor>\",\n  \"publicationType\": \"BOOK\",\n  \"format\": \"EPUB\",\n  \"fileSize\": 20.0\n}"
+            },
+            "url": {
+              "raw": "{{publications_base_url}}/api/publications/:id",
+              "host": ["{{publications_base_url}}"],
+              "path": ["api", "publications", ":id"],
+              "variable": [{ "key": "id", "value": "uuid-de-ejemplo" }]
+            }
+          }
+        },
+        {
+          "name": "Eliminar Publicación",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "url": {
+              "raw": "{{publications_base_url}}/api/publications/:id",
+              "host": ["{{publications_base_url}}"],
+              "path": ["api", "publications", ":id"],
+              "variable": [{ "key": "id", "value": "uuid-de-ejemplo" }]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "authors_base_url", "value": "http://localhost:8000", "type": "string" },
+    { "key": "publications_base_url", "value": "http://localhost:8080", "type": "string" },
+    { "key": "auth_token", "value": "", "type": "string", "description": "Se setea automáticamente tras el login" }
+  ]
+}

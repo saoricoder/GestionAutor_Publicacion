@@ -1,13 +1,47 @@
 {
   "info": {
-    "_postman_id": "authors-service-collection",
+    "_postman_id": "1e9f8a4b-5b0c-4a9d-8d5a-3c7e8f6b2c1d",
     "name": "Authors Service API",
     "description": "Colección de API para el servicio de gestión de autores - GestionAut_Pub",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "41410430"
   },
   "item": [
     {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "login"
+              ]
+            },
+            "description": "Autentica un usuario y devuelve sus datos y un token Bearer.\n\nRespuesta esperada (200):\n{\n  \"success\": true,\n  \"message\": \"Inicio de sesión exitoso.\",\n  \"data\": { /* datos del usuario */ },\n  \"token\": \"<token>\"\n}"
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints relacionados con la autenticación de usuarios."
+    },
+    {
       "name": "Authors",
+      "description": "Endpoints para la gestión de autores (CRUD).",
       "item": [
         {
           "name": "Get All Authors",
@@ -52,17 +86,23 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/authors/1",
+              "raw": "{{base_url}}/api/authors/:id",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "api",
                 "authors",
-                "1"
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<uuid-del-autor>"
+                }
               ]
             },
-            "description": "Obtiene los detalles de un autor específico por su ID. Reemplaza '1' con el ID deseado."
+            "description": "Obtiene los detalles de un autor específico por su ID."
           },
           "response": []
         },
@@ -95,6 +135,67 @@
               ]
             },
             "description": "Crea un nuevo autor en el sistema. Se requieren los campos: name, email, bio y affiliation."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Author",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Nombre Actualizado\",\n  \"email\": \"email.actualizado@example.com\",\n  \"bio\": \"Biografía actualizada del autor.\",\n  \"affiliation\": \"Nueva Afiliación\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/authors/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "authors",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<uuid-del-autor>"
+                }
+              ]
+            },
+            "description": "Actualiza los datos de un autor existente por su ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Author",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/authors/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "authors",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<uuid-del-autor>"
+                }
+              ]
+            },
+            "description": "Elimina un autor existente por su ID."
           },
           "response": []
         }

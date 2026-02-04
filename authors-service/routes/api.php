@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -9,6 +10,9 @@ use App\Http\Controllers\AuthorController;
 |--------------------------------------------------------------------------
 | Aquí es donde registras las rutas para tu microservicio.
 */
+
+// Ruta para autenticación de usuarios (autores)
+Route::post('/login', [AuthController::class, 'login']);
 
 // Agrupamos las rutas de autores para mantener el código limpio
 Route::prefix('authors')->group(function () {

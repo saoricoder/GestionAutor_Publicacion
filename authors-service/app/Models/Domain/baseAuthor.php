@@ -1,6 +1,12 @@
 <?php
 namespace App\Models\Domain;
 
+/**
+ * Clase abstracta (Template): Base para autores del dominio.
+ * Dónde: en authors-service para unificar atributos (id, nombre, email, bio).
+ * Por qué: estandariza acceso y obliga a definir comportamiento específico
+ * (getRoleDescription) en derivadas.
+ */
 abstract class BaseAuthor {
     protected $idAuthor;
     protected $name;
