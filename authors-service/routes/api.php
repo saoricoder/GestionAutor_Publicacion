@@ -28,4 +28,4 @@ Route::prefix('authors')->group(function () {
 
     Route::put('/{id}', [AuthorController::class, 'update']);
     Route::delete('/{id}', [AuthorController::class, 'destroy']);
-});
+}); 
