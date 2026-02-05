@@ -32,13 +32,13 @@ class AuthController extends Controller
         }
 
         // Generar token
-        $token = $user->createToken('auth_token')->plainTextToken; // <--- Generación del token
+        $token = $user->createToken('auth_token')->plainTextToken; 
 
         return response()->json([
             'success' => true,
             'message' => 'Inicio de sesión exitoso.',
             'data' => $user,
-            'token' => $token // <--- Incluir token en la respuesta
+            'token' => $token /
         ]);
     }
 }
